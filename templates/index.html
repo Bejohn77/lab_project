@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Edu Games Platform</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Edu Games</h1>
+    <p>Learn through short games — Quiz & Study</p>
+  </header>
+
+  <main>
+    <section id="menu">
+      <button id="btn-quiz">Play Quiz</button>
+      <button id="btn-study">Study (Flashcards)</button>
+    </section>
+
+    <section id="game" class="hidden">
+      <div id="quiz-container" class="hidden">
+        <form id="quiz-form"></form>
+        <button id="submit-quiz">Submit Answers</button>
+        <div id="quiz-result" class="result"></div>
+      </div>
+
+      <div id="study-container" class="hidden">
+        <div id="card">
+          <div id="question"></div>
+          <button id="reveal">Reveal Answer</button>
+          <div id="answer" class="hidden"></div>
+          <button id="next-card">Next</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

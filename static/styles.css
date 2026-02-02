@@ -1,0 +1,7 @@
+body{font-family:Segoe UI,Arial,Helvetica,sans-serif;margin:24px}
+header{margin-bottom:16px}
+button{margin:4px;padding:8px 12px}
+.hidden{display:none}
+.question{margin:12px 0;padding:8px;border:1px solid #ddd}
+.result{margin-top:12px;font-weight:bold}
+#card{border:1px solid #ccc;padding:16px;width:320px}

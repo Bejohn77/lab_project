@@ -1,0 +1,7 @@
+[
+  {"id":1,"question":"What is 2 + 2?","choices":["3","4","5","6"],"answer":1},
+  {"id":2,"question":"Capital of France?","choices":["Berlin","London","Paris","Rome"],"answer":2},
+  {"id":3,"question":"H2O is the chemical formula for?","choices":["Hydrogen","Oxygen","Water","Carbon Dioxide"],"answer":2},
+  {"id":4,"question":"Largest planet in the Solar System?","choices":["Earth","Mars","Jupiter","Venus"],"answer":2},
+  {"id":5,"question":"Which is a primary color?","choices":["Green","Purple","Red","Black"],"answer":2}
+]
