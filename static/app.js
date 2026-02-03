@@ -1,21 +1,39 @@
 let questions = []
+let isLoading = false
 
 async function fetchQuestions(){
-  const res = await fetch('/api/questions')
-  questions = await res.json()
+  try {
+    isLoading = true
+    const res = await fetch('/api/questions')
+    if (!res.ok) throw new Error('Failed to load questions')
+    questions = await res.json()
+  } catch (err) {
+    console.error('Error loading questions:', err)
+    alert('Failed to load questions. Please refresh.')
+  } finally {
+    isLoading = false
+  }
 }
 
 function el(id){ return document.getElementById(id) }
-
 function show(elem){ elem.classList.remove('hidden') }
 function hide(elem){ elem.classList.add('hidden') }
+function setLoading(btn, loading){
+  btn.disabled = loading
+  btn.textContent = loading ? '⟳ Loading...' : btn.dataset.originalText
+}
 
 function renderQuiz(){
   const form = el('quiz-form')
   form.innerHTML = ''
-  questions.forEach(q => {
+  questions.forEach((q,idx) => {
     const wrapper = document.createElement('div')
     wrapper.className = 'question'
+    const num = document.createElement('div')
+    num.style.fontSize = '0.9em'
+    num.style.color = '#64748b'
+    num.textContent = `Question ${idx + 1} of ${questions.length}`
+    wrapper.appendChild(num)
     const title = document.createElement('div')
     title.textContent = q.question
     wrapper.appendChild(title)
@@ -34,15 +52,33 @@ function renderQuiz(){
 }
 
 async function submitQuiz(){
-  const answers = {}
-  questions.forEach(q=>{
-    const name = `q-${q.id}`
-    const checked = document.querySelector(`input[name="${name}"]:checked`)
-    if(checked) answers[String(q.id)] = checked.value
-  })
-  const res = await fetch('/api/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({answers})})
-  const data = await res.json()
-  el('quiz-result').textContent = `Score: ${data.score}/${data.total}`
+  const btn = el('submit-quiz')
+  btn.dataset.originalText = btn.textContent
+  try {
+    setLoading(btn, true)
+    const answers = {}
+    questions.forEach(q=>{
+      const name = `q-${q.id}`
+      const checked = document.querySelector(`input[name="${name}"]:checked`)
+      if(checked) answers[String(q.id)] = checked.value
+    })
+    const res = await fetch('/api/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({answers})
+    })
+    if (!res.ok) throw new Error('Failed to submit quiz')
+    const data = await res.json()
+    el('quiz-result').innerHTML = `
+      <div style="margin-bottom:12px">Score: ${data.score}/${data.total}</div>
+      <div style="font-size:1.5em;color:#10b981">📊 ${data.percentage}%</div>
+    `
+  } catch (err) {
+    console.error('Submit error:', err)
+    alert('Failed to submit quiz. Please try again.')
+  } finally {
+    setLoading(btn, false)
+  }
 }
 
 let currentCard = 0
@@ -52,6 +88,7 @@ function renderCard(){
   el('question').textContent = q.question
   el('answer').textContent = q.choices[q.answer]
   hide(el('answer'))
+  document.querySelector('#study-container h2').textContent = `Flashcard Study (${currentCard + 1}/${questions.length})`
 }
 
 function nextCard(){
@@ -59,9 +96,15 @@ function nextCard(){
   renderCard()
 }
 
+function goToMenu(){
+  show(el('menu'))
+  hide(el('game'))
+}
+
 // UI wiring
 window.addEventListener('DOMContentLoaded', async ()=>{
   await fetchQuestions()
+  
   el('btn-quiz').addEventListener('click', ()=>{
     hide(el('menu'))
     show(el('game'))
@@ -69,6 +112,7 @@ window.addEventListener('DOMContentLoaded', async ()=>{
     hide(el('study-container'))
     renderQuiz()
   })
+  
   el('btn-study').addEventListener('click', ()=>{
     hide(el('menu'))
     show(el('game'))
@@ -77,7 +121,12 @@ window.addEventListener('DOMContentLoaded', async ()=>{
     currentCard = 0
     renderCard()
   })
+  
   el('submit-quiz').addEventListener('click', submitQuiz)
   el('reveal').addEventListener('click', ()=>show(el('answer')))
   el('next-card').addEventListener('click', nextCard)
+  
+  // Back to menu buttons
+  const backBtns = document.querySelectorAll('.back-btn')
+  backBtns.forEach(btn => btn.addEventListener('click', goToMenu))
 })

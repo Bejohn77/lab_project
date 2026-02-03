@@ -32,12 +32,24 @@ header h1{
   font-size:2.5em;
   margin:0;
   font-weight:700;
+  animation:slideDown 0.6s ease;
 }
 
 header p{
   margin:8px 0 0;
   font-size:1.1em;
   opacity:0.95;
+  animation:fadeIn 0.8s ease 0.2s both;
+}
+
+@keyframes slideDown{
+  from{transform:translateY(-30px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
 }
 
 main{
@@ -65,13 +77,20 @@ button{
   letter-spacing:0.5px;
 }
 
+button:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+}
+
 #btn-quiz, #btn-study{
   background:var(--card-bg);
   color:var(--primary);
   box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  min-width:200px;
+  font-size:1.05em;
 }
 
-#btn-quiz:hover, #btn-study:hover{
+#btn-quiz:hover:not(:disabled), #btn-study:hover:not(:disabled){
   transform:translateY(-2px);
   box-shadow:0 6px 20px rgba(0,0,0,0.2);
 }
@@ -82,7 +101,7 @@ button{
   min-width:140px;
 }
 
-#submit-quiz:hover, #reveal:hover, #next-card:hover{
+#submit-quiz:hover:not(:disabled), #reveal:hover:not(:disabled), #next-card:hover:not(:disabled){
   background:var(--primary-dark);
   transform:translateY(-1px);
 }
@@ -94,10 +113,24 @@ button{
   border-radius:12px;
   padding:40px;
   box-shadow:0 8px 32px rgba(0,0,0,0.1);
+  animation:slideUp 0.4s ease;
+}
+
+@keyframes slideUp{
+  from{transform:translateY(20px);opacity:0}
+  to{transform:translateY(0);opacity:1}
 }
 
 #quiz-form{
   margin-bottom:24px;
+}
+
+#game h2{
+  color:var(--text);
+  margin-top:0;
+  margin-bottom:24px;
+  text-align:center;
+  font-size:1.5em;
 }
 
 .question{
@@ -114,9 +147,9 @@ button{
   box-shadow:0 2px 8px rgba(99,102,241,0.1);
 }
 
-.question > div:first-child{
+.question > div:nth-child(2){
   font-weight:600;
-  margin-bottom:12px;
+  margin:8px 0 12px;
   color:var(--text);
   font-size:1.05em;
 }
@@ -136,19 +169,22 @@ label:hover{
 input[type="radio"]{
   margin-right:10px;
   cursor:pointer;
-  width:18px;
-  height:18px;
+  width:20px;
+  height:20px;
+  accent-color:var(--primary);
 }
 
 .result{
   margin-top:24px;
-  padding:20px;
+  padding:24px;
   background:linear-gradient(135deg, #10b981 0%, #059669 100%);
   color:white;
   border-radius:8px;
   font-weight:bold;
-  font-size:1.3em;
+  font-size:1.2em;
   text-align:center;
+  box-shadow:0 4px 12px rgba(16,185,129,0.3);
+  animation:slideUp 0.4s ease;
 }
 
 #study-container #card{
@@ -162,14 +198,16 @@ input[type="radio"]{
   flex-direction:column;
   justify-content:center;
   align-items:center;
+  box-shadow:inset 0 2px 4px rgba(0,0,0,0.05);
 }
 
 #question{
-  font-size:1.5em;
+  font-size:1.6em;
   font-weight:600;
   text-align:center;
   margin-bottom:30px;
   color:var(--text);
+  line-height:1.4;
 }
 
 #answer{
@@ -181,10 +219,22 @@ input[type="radio"]{
   background:white;
   border-left:4px solid var(--secondary);
   border-radius:4px;
+  animation:fadeIn 0.3s ease;
 }
 
 #study-container button{
   margin:10px 5px;
+}
+
+.back-btn{
+  background:var(--danger);
+  color:white;
+  padding:10px 16px;
+  font-size:0.9em;
+}
+
+.back-btn:hover:not(:disabled){
+  background:#dc2626;
 }
 
 @media(max-width:600px){
@@ -192,6 +242,8 @@ input[type="radio"]{
   header h1{font-size:1.8em}
   #game{padding:20px}
   #menu{gap:10px}
-  button{padding:12px 20px;font-size:1em}
+  button{padding:12px 20px;font-size:0.95em}
   #study-container #card{min-height:200px}
+  #question{font-size:1.2em}
+  .question{padding:12px}
 }
