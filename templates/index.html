@@ -4,43 +4,94 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Edu Games Platform</title>
-  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="/static/styles_new.css">
 </head>
 <body>
-  <header>
-    <h1>🎓 Edu Games</h1>
-    <p>Learn through short games — Quiz & Study</p>
-  </header>
-
-  <main>
-    <section id="menu">
-      <button id="btn-quiz">📝 Play Quiz</button>
-      <button id="btn-study">🎯 Study Flashcards</button>
-    </section>
-
-    <section id="game" class="hidden">
-      <div id="quiz-container" class="hidden">
-        <h2 style="text-align:center;color:#1e293b;margin-top:0">Quiz Time!</h2>
-        <form id="quiz-form"></form>
-        <div style="text-align:center">
-          <button id="submit-quiz">✓ Submit Answers</button>
-        </div>
-        <div id="quiz-result" class="result"></div>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-content">
+        <h1 class="logo">🎓 EduGames</h1>
+        <p class="tagline">Master Your Skills with Interactive Learning</p>
       </div>
+    </header>
 
-      <div id="study-container" class="hidden">
-        <h2 style="text-align:center;color:#1e293b;margin-top:0">Flashcard Study</h2>
-        <div id="card">
-          <div id="question"></div>
-          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
-            <button id="reveal">Reveal Answer</button>
-            <button id="next-card">→ Next Card</button>
+    <!-- Main Content -->
+    <main>
+      <!-- Menu Section -->
+      <section id="menu" class="menu-section">
+        <div class="menu-grid">
+          <button id="btn-quiz" class="menu-btn quiz-btn">
+            <div class="btn-icon">📝</div>
+            <div class="btn-title">Quiz Mode</div>
+            <div class="btn-desc">Test your knowledge</div>
+          </button>
+          <button id="btn-study" class="menu-btn study-btn">
+            <div class="btn-icon">🎯</div>
+            <div class="btn-title">Flashcards</div>
+            <div class="btn-desc">Learn & memorize</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Game Section -->
+      <section id="game" class="game-section hidden">
+        
+        <!-- Quiz Mode -->
+        <div id="quiz-container" class="quiz-container hidden">
+          <div class="quiz-header">
+            <div class="quiz-title">📝 Quiz Challenge</div>
+            <div class="progress-bar">
+              <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <div id="progress-text" class="progress-text">1/5</div>
           </div>
-          <div id="answer" class="hidden"></div>
+          
+          <div class="quiz-content">
+            <form id="quiz-form"></form>
+          </div>
+          
+          <div class="quiz-footer">
+            <button id="back-quiz" class="btn-secondary">← Back</button>
+            <button id="submit-quiz" class="btn-primary">Submit Quiz</button>
+          </div>
+          
+          <div id="quiz-result" class="quiz-result hidden"></div>
         </div>
-      </div>
-    </section>
-  </main>
+
+        <!-- Study Mode -->
+        <div id="study-container" class="study-container hidden">
+          <div class="study-header">
+            <button id="back-study" class="btn-close">✕</button>
+            <div class="study-title">🎯 Flashcard Study</div>
+            <div id="card-counter" class="card-counter">1/5</div>
+          </div>
+
+          <div class="flashcard">
+            <div class="flashcard-inner" id="flashcard-inner">
+              <div class="flashcard-front">
+                <div id="question" class="flashcard-text"></div>
+                <div class="flashcard-hint">Click to reveal answer</div>
+              </div>
+              <div class="flashcard-back hidden">
+                <div id="answer" class="flashcard-text"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="study-controls">
+            <button id="reveal" class="btn-secondary">Reveal Answer</button>
+            <button id="next-card" class="btn-primary">Next Card →</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Made with ❤️ for learners | © 2026 EduGames</p>
+    </footer>
+  </div>
 
   <script src="/static/app.js"></script>
 </body>

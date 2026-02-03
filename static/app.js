@@ -1,5 +1,6 @@
 let questions = []
 let isLoading = false
+let currentCard = 0
 
 async function fetchQuestions(){
   try {
@@ -21,6 +22,13 @@ function hide(elem){ elem.classList.add('hidden') }
 function setLoading(btn, loading){
   btn.disabled = loading
   btn.textContent = loading ? '⟳ Loading...' : btn.dataset.originalText
+}
+
+function updateProgress(){
+  const total = questions.length
+  const filled = Math.round((currentCard + 1) / total * 100)
+  el('progress-fill').style.width = filled + '%'
+  el('progress-text').textContent = `${currentCard + 1}/${total}`
 }
 
 function renderQuiz(){
@@ -52,6 +60,7 @@ function renderQuiz(){
     wrapper.appendChild(choicesDiv)
     form.appendChild(wrapper)
   })
+  updateProgress()
 }
 
 async function submitQuiz(){
@@ -72,10 +81,13 @@ async function submitQuiz(){
     })
     if (!res.ok) throw new Error('Failed to submit quiz')
     const data = await res.json()
-    el('quiz-result').innerHTML = `
-      <div style="margin-bottom:12px">Score: ${data.score}/${data.total}</div>
-      <div style="font-size:1.5em;color:#10b981">📊 ${data.percentage}%</div>
+    const resultDiv = el('quiz-result')
+    resultDiv.innerHTML = `
+      <div class="result-score">${data.score}/${data.total}</div>
+      <div class="result-percentage">📊 ${data.percentage}% Correct</div>
+      <div class="result-message">${getResultMessage(data.percentage)}</div>
     `
+    show(resultDiv)
   } catch (err) {
     console.error('Submit error:', err)
     alert('Failed to submit quiz. Please try again.')
@@ -84,14 +96,24 @@ async function submitQuiz(){
   }
 }
 
-let currentCard = 0
+function getResultMessage(percentage){
+  if(percentage === 100) return '🎉 Perfect Score! Outstanding!'
+  if(percentage >= 80) return '🌟 Great Job! Well Done!'
+  if(percentage >= 60) return '👍 Good Effort! Keep Practicing!'
+  if(percentage >= 40) return '💪 Not Bad! Keep Learning!'
+  return '📚 Keep Studying! You Got This!'
+}
+
 function renderCard(){
   const q = questions[currentCard]
   if(!q) return
   el('question').textContent = q.question
   el('answer').textContent = q.choices[q.answer]
-  hide(el('answer'))
-  document.querySelector('#study-container h2').textContent = `Flashcard Study (${currentCard + 1}/${questions.length})`
+  el('card-counter').textContent = `${currentCard + 1}/${questions.length}`
+  const flashcard = el('flashcard-inner')
+  flashcard.classList.remove('flipped')
+  hide(el('flashcard-back'))
+  show(el('flashcard-front'))
 }
 
 function nextCard(){
@@ -113,6 +135,7 @@ window.addEventListener('DOMContentLoaded', async ()=>{
     show(el('game'))
     show(el('quiz-container'))
     hide(el('study-container'))
+    hide(el('quiz-result'))
     renderQuiz()
   })
   
@@ -125,11 +148,17 @@ window.addEventListener('DOMContentLoaded', async ()=>{
     renderCard()
   })
   
+  // Quiz controls
   el('submit-quiz').addEventListener('click', submitQuiz)
-  el('reveal').addEventListener('click', ()=>show(el('answer')))
-  el('next-card').addEventListener('click', nextCard)
+  el('back-quiz').addEventListener('click', goToMenu)
   
-  // Back to menu buttons
-  const backBtns = document.querySelectorAll('.back-btn')
-  backBtns.forEach(btn => btn.addEventListener('click', goToMenu))
+  // Study controls
+  el('back-study').addEventListener('click', goToMenu)
+  el('flashcard-inner').addEventListener('click', ()=>{
+    el('flashcard-inner').classList.toggle('flipped')
+  })
+  el('reveal').addEventListener('click', ()=>{
+    el('flashcard-inner').classList.add('flipped')
+  })
+  el('next-card').addEventListener('click', nextCard)
 })
