@@ -194,11 +194,25 @@ button:disabled{
   transform:translateX(4px);
 }
 
-.question > div:nth-child(2){
+.question-number{
+  font-size:0.9em;
+  color:#64748b;
+  margin-bottom:8px;
+  font-weight:500;
+}
+
+.question-text{
   font-weight:600;
   margin:8px 0 12px;
   color:var(--text);
   font-size:1.05em;
+  margin-left:0;
+}
+
+.choices{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
 }
 
 label{

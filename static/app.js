@@ -30,13 +30,15 @@ function renderQuiz(){
     const wrapper = document.createElement('div')
     wrapper.className = 'question'
     const num = document.createElement('div')
-    num.style.fontSize = '0.9em'
-    num.style.color = '#64748b'
+    num.className = 'question-number'
     num.textContent = `Question ${idx + 1} of ${questions.length}`
     wrapper.appendChild(num)
     const title = document.createElement('div')
+    title.className = 'question-text'
     title.textContent = q.question
     wrapper.appendChild(title)
+    const choicesDiv = document.createElement('div')
+    choicesDiv.className = 'choices'
     q.choices.forEach((c,i)=>{
       const label = document.createElement('label')
       const input = document.createElement('input')
@@ -45,8 +47,9 @@ function renderQuiz(){
       input.value = i
       label.appendChild(input)
       label.appendChild(document.createTextNode(' ' + c))
-      wrapper.appendChild(label)
+      choicesDiv.appendChild(label)
     })
+    wrapper.appendChild(choicesDiv)
     form.appendChild(wrapper)
   })
 }
