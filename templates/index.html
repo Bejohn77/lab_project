@@ -8,29 +8,35 @@
 </head>
 <body>
   <header>
-    <h1>Edu Games</h1>
+    <h1>🎓 Edu Games</h1>
     <p>Learn through short games — Quiz & Study</p>
   </header>
 
   <main>
     <section id="menu">
-      <button id="btn-quiz">Play Quiz</button>
-      <button id="btn-study">Study (Flashcards)</button>
+      <button id="btn-quiz">📝 Play Quiz</button>
+      <button id="btn-study">🎯 Study Flashcards</button>
     </section>
 
     <section id="game" class="hidden">
       <div id="quiz-container" class="hidden">
+        <h2 style="text-align:center;color:#1e293b;margin-top:0">Quiz Time!</h2>
         <form id="quiz-form"></form>
-        <button id="submit-quiz">Submit Answers</button>
+        <div style="text-align:center">
+          <button id="submit-quiz">✓ Submit Answers</button>
+        </div>
         <div id="quiz-result" class="result"></div>
       </div>
 
       <div id="study-container" class="hidden">
+        <h2 style="text-align:center;color:#1e293b;margin-top:0">Flashcard Study</h2>
         <div id="card">
           <div id="question"></div>
-          <button id="reveal">Reveal Answer</button>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+            <button id="reveal">Reveal Answer</button>
+            <button id="next-card">→ Next Card</button>
+          </div>
           <div id="answer" class="hidden"></div>
-          <button id="next-card">Next</button>
         </div>
       </div>
     </section>
